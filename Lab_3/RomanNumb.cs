@@ -9,7 +9,7 @@
         {
             set
             {
-                if (value <= 0)
+                if (value == 0 || value > 3999)
                     throw new RomanNumberException("Ошибка: значение n <= 0");
 
                 number = value;
@@ -19,7 +19,7 @@
 
         public RomanNumber(ushort n)
         {
-            if (n <= 0)
+            if (n == 0 || n > 3999)
                 throw new RomanNumberException("Ошибка: значение n <= 0", n);
 
             number = n;
@@ -28,15 +28,20 @@
         //Сложение римских чисел
         public static RomanNumber operator +(RomanNumber? n1, RomanNumber? n2)
         {
+           return Add(n1, n2);
+        }
+
+        public static RomanNumber Add(RomanNumber? n1, RomanNumber? n2)
+        {
             if (n1 == null || n2 == null)
             {
                 throw new ArgumentNullException(nameof(n1));
             }
 
-            ushort tmp = (ushort)(n1.number + n2.number);
+            ushort tmp = checked((ushort)(n1.number + n2.number));
 
-            if (tmp <= 0)
-                throw new RomanNumberException("Ошибка: значение n <= 0", tmp);
+            if (tmp == 0)
+                throw new RomanNumberException("Ошибка: значение n == 0", tmp);
 
             RomanNumber r = new RomanNumber(tmp);
             return r;
@@ -45,15 +50,19 @@
         //Вычитание римских чисел
         public static RomanNumber operator -(RomanNumber? n1, RomanNumber? n2)
         {
+            return Sub(n1, n2);
+        }
+        public static RomanNumber Sub(RomanNumber? n1, RomanNumber? n2)
+        {
             if (n1 == null || n2 == null)
             {
                 throw new ArgumentNullException(nameof(n1));
             }
 
-            ushort tmp = (ushort)(n1.number - n2.number);
+            ushort tmp = checked((ushort)(n1.number - n2.number));
 
-            if (tmp <= 0)
-                throw new RomanNumberException("Ошибка: значение n <= 0", tmp);
+            if (tmp == 0)
+                throw new RomanNumberException("Ошибка: значение n == 0", tmp);
 
             RomanNumber r = new RomanNumber(tmp);
             return r;
@@ -62,12 +71,17 @@
         //Умножение римских чисел
         public static RomanNumber operator *(RomanNumber? n1, RomanNumber? n2)
         {
+            return Mul(n1, n2);
+        }
+
+        public static RomanNumber Mul(RomanNumber? n1, RomanNumber? n2)
+        {
             if (n1 == null || n2 == null)
             {
                 throw new ArgumentNullException(nameof(n1));
             }
 
-            ushort tmp = (ushort)(n1.number * n2.number);
+            ushort tmp = checked((ushort)(n1.number * n2.number));
 
             if (tmp <= 0)
                 throw new RomanNumberException("Ошибка: значение n <= 0", tmp);
@@ -79,14 +93,18 @@
         //Целочисленное деление римских чисел
         public static RomanNumber operator /(RomanNumber? n1, RomanNumber? n2)
         {
+            return Div(n1, n2);
+        }
+        public static RomanNumber Div(RomanNumber? n1, RomanNumber? n2)
+        {
             if (n1 == null || n2 == null)
             {
                 throw new ArgumentNullException(nameof(n1));
             }
 
-            ushort tmp = (ushort)(n1.number / n2.number);
+            ushort tmp = checked((ushort)(n1.number / n2.number));
 
-            if (tmp <= 0)
+            if (tmp == 0)
                 throw new RomanNumberException("Ошибка: значение меньше нуля", tmp);
 
             RomanNumber r = new RomanNumber(tmp);
@@ -96,7 +114,7 @@
         //Возвращает строковое представление римского числа
         public override string ToString()
         {
-            if (number >= 3999) throw new OverflowException("Ошибка: значение n > 3999");
+            if (number > 3999) throw new OverflowException("Ошибка: значение n > 3999");
             string symb = "IVXLCDM";
             int value = number, degrees = -1;
             while (value != 0)

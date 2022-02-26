@@ -29,7 +29,6 @@ namespace RomanNumb.Tests
             catch (RomanNumberException)
             {
                 Assert.IsNull(nullObject);
-                
             }
             Assert.IsTrue(value);
             Assert.IsNotNull(number);
@@ -79,6 +78,7 @@ namespace RomanNumb.Tests
 
             var finalValue = number.CompareTo(object1);
 
+          
             Assert.IsTrue(finalValue == -11);
         }
 
@@ -104,10 +104,8 @@ namespace RomanNumb.Tests
 
             RomanNumber finalValue = object1 - number;
 
-            //Как делегатом указывать на перегруженный оператор ?
-/*          Func<RomanNumber> methodCall = number - object1;
-
-            Assert.ThrowsException<RomanNumberException>(methodCall);*/
+            /*Assert.ThrowsException<RomanNumberException>(() => RomanNumber.Sub(number, object1));*/
+            Assert.ThrowsException<OverflowException>(() => RomanNumber.Sub(number, object1));
             Assert.AreEqual(finalValue.Number, value - n);
         }
 
@@ -118,11 +116,10 @@ namespace RomanNumb.Tests
             RomanNumber number = new RomanNumber(n);
             RomanNumber object1 = new RomanNumber(value);
 
-            number = object1 / number;
-            /*Func<RomanNumber> methodCall = number / object1;
+            RomanNumber newNumber = object1 / number;
 
-            Assert.ThrowsException<RomanNumberException>(methodCall);*/
-            Assert.AreEqual(number.Number, value / n);
+            Assert.ThrowsException<RomanNumberException>(() => RomanNumber.Div(number, object1));
+            Assert.AreEqual(newNumber.Number, value / n);
         }
 
         [TestMethod()]

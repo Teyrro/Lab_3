@@ -24,7 +24,6 @@ class Program
                 Console.Write("RomanMassive : ");
                 for (int i = lower; i <= upper; i++)
                 {
-                    
                     Console.Write($"{s.GetValue(i)} ");
                 }
                 Console.WriteLine("");
