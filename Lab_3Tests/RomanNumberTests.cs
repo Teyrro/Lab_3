@@ -125,13 +125,16 @@ namespace RomanNumb.Tests
         [TestMethod()]
         public void MutTest()
         {
-            ushort n = 1, value = 12;
+            ushort n = 1, value = 12, maxValue = 3999;
+            RomanNumber throwExceptionValue = new RomanNumber(maxValue);
             RomanNumber number = new RomanNumber(n);
             RomanNumber object1 = new RomanNumber(value);
+
 
             number = number * object1;
 
             Assert.AreEqual(number.Number, n * value);
+            Assert.ThrowsException<OverflowException>(() => RomanNumber.Mul(throwExceptionValue, throwExceptionValue));
         }
     }
 }
