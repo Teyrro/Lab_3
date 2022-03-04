@@ -18,18 +18,11 @@ namespace RomanNumb.Tests
             ushort n = 1;
             ushort uncorrectValue = 0;
             RomanNumber number = new RomanNumber(n);
-            RomanNumber? nullObject = null;
+            
 
             var value = number.Number == 1;
-            try
-            {
-                nullObject = new RomanNumber(uncorrectValue);
-            }
 
-            catch (RomanNumberException)
-            {
-                Assert.IsNull(nullObject);
-            }
+            Assert.ThrowsException<RomanNumberException>(() => new RomanNumber(uncorrectValue));
             Assert.IsTrue(value);
             Assert.IsNotNull(number);
         }
@@ -85,12 +78,14 @@ namespace RomanNumb.Tests
         [TestMethod()]
         public void AddTest()
         {
-            ushort n = 1, value = 12;
+            ushort n = 1, value = 12, value2 = 3999 ;
             RomanNumber number = new RomanNumber(n);
             RomanNumber object1 = new RomanNumber(value);
+            RomanNumber overflowNumber = new RomanNumber(value2);
 
             number = number + object1;
 
+            Assert.ThrowsException<RomanNumberException>(() => RomanNumber.Add(number, overflowNumber));
             Assert.AreEqual(number.Number, n + value);
         }
 
@@ -103,9 +98,10 @@ namespace RomanNumb.Tests
             
 
             RomanNumber finalValue = object1 - number;
+          
 
             /*Assert.ThrowsException<RomanNumberException>(() => RomanNumber.Sub(number, object1));*/
-            Assert.ThrowsException<OverflowException>(() => RomanNumber.Sub(number, object1));
+            Assert.ThrowsException<RomanNumberException>(() => RomanNumber.Sub(number, object1));
             Assert.AreEqual(finalValue.Number, value - n);
         }
 
@@ -134,7 +130,7 @@ namespace RomanNumb.Tests
             number = number * object1;
 
             Assert.AreEqual(number.Number, n * value);
-            Assert.ThrowsException<OverflowException>(() => RomanNumber.Mul(throwExceptionValue, throwExceptionValue));
+            Assert.ThrowsException<RomanNumberException>(() => RomanNumber.Mul(throwExceptionValue, throwExceptionValue));
         }
     }
 }
